@@ -6,6 +6,7 @@ public class main {
 
     // Create a hashmap includes key: String and value: List<String>
     public static HashMap<String, List<String>> hashMap = new HashMap<String, List<String>>();
+    public ArrayList<String> history = new ArrayList<String>();
 
     public static void Menu(){
         String redo = null;
@@ -40,7 +41,7 @@ public class main {
                             findDefine();
                             break;
                         case 2:
-                            System.out.println("Function 2");
+                            findSlang();
                             break;
                         case 3:
                             System.out.println("Function 3");
@@ -122,6 +123,7 @@ public class main {
         }
     }
 
+    // Function 1
     public static void findDefine(){
         System.out.print("Enter a Slang: ");
         String key = sc.nextLine();
@@ -131,14 +133,54 @@ public class main {
         // Check if hashMap have a key that equals to key wanna find
         if(hashMap.containsKey(key)){
             List<String> list = hashMap.get(key);
-            System.out.println("");
             System.out.print(key + ": ");
-            for(String define: list){
-                System.out.println(define);
-                System.out.println("");
-            }
+            System.out.println(list);
+
         }else{
             System.out.println("Cannot found!");
+        }
+    }
+
+    // get the definition of the corresponding slangWord
+    public static void getDefinition(String slangWord){
+        List<String> list = hashMap.get(slangWord);
+
+        for(String word: list){
+            System.out.print(word + ", ");
+        }
+
+        System.out.print("\n");
+    }
+
+    // Function 2
+    public static void findSlang(){
+        //Arraylist of slang words which has a definition that user wanna search
+        ArrayList<String> slang = new ArrayList<String>();
+
+        System.out.print("Enter a definition: ");
+        String define = sc.nextLine();
+
+        define = define.toLowerCase();
+
+
+        //Check that definition is contains user's input
+        for (String key: hashMap.keySet()) {    //get key
+            for(String value: hashMap.get(key)){ //get value
+                if(value.toLowerCase().contains(define)){
+                    //If contains, add to the slang list
+                    slang.add(key);
+                }
+            }
+        }
+
+        if(slang.isEmpty()){
+            System.out.println("Cannot found!");
+        }
+        else{
+            for(String word : slang){
+                System.out.print("- " + word + ": ");
+                getDefinition(word);
+            }
         }
     }
 
