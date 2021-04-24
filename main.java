@@ -6,7 +6,7 @@ public class main {
 
     // Create a hashmap includes key: String and value: List<String>
     public static HashMap<String, List<String>> hashMap = new HashMap<String, List<String>>();
-    public ArrayList<String> history = new ArrayList<String>();
+    public static ArrayList<String> history = new ArrayList<String>();
 
     public static void Menu(){
         String redo = null;
@@ -25,6 +25,7 @@ public class main {
             System.out.println("|          8. Random slang-word                 |");
             System.out.println("|          9. Game 1                            |");
             System.out.println("|          10.Game 2                            |");
+            System.out.println("|          11.Exit                              |");
             System.out.println("================================================");
             System.out.print("Choose one of the options: ");
 
@@ -44,7 +45,7 @@ public class main {
                             findSlang();
                             break;
                         case 3:
-                            System.out.println("Function 3");
+                            showHistory();
                             break;
                         case 4:
                             System.out.println("Function 4");
@@ -67,6 +68,9 @@ public class main {
                         case 10:
                             System.out.println("Function 10");
                             break;
+                        case 11:
+                            System.exit(0   );
+                            break;
                         default: 
                             System.out.println("Your option is not available!");
                             break;
@@ -78,10 +82,12 @@ public class main {
                 }
             }
             
+            // saveHistory("history.txt");
             System.out.println("Keep doing? (yes/no)");
             redo = sc.nextLine();
             
         }while(redo.equals("yes") == true);
+
     }
 
     public static void readFile(String fileName){
@@ -128,6 +134,7 @@ public class main {
         System.out.print("Enter a Slang: ");
         String key = sc.nextLine();
 
+        history.add(key);
         key = key.toUpperCase();
 
         // Check if hashMap have a key that equals to key wanna find
@@ -160,6 +167,8 @@ public class main {
         System.out.print("Enter a definition: ");
         String define = sc.nextLine();
 
+        history.add(define);
+
         define = define.toLowerCase();
 
 
@@ -184,6 +193,57 @@ public class main {
         }
     }
 
+    //save what you look for into history variable
+    public static void saveHistory(String fileName){
+        try {
+            File file = new File(fileName);
+            FileWriter fileWriter = new FileWriter(file);
+
+            for(String item : history){
+                fileWriter.write(item + "\n");
+            }
+
+            fileWriter.close();
+        }catch(Exception ex){
+            System.out.println("Something goes wrong: " + ex);
+        }
+    }
+
+    //read data from history variable and write down that data to history.txt file 
+    public static ArrayList<String> readHistory(String fileName){
+        ArrayList<String> history = new ArrayList<String>();
+
+        try{
+            File file = new File(fileName);
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            String line;
+
+            while((line = bufferedReader.readLine()) != null){
+                history.add(line);
+            }
+
+            fileReader.close();
+            bufferedReader.close();
+
+        }catch(Exception ex){
+            System.out.println("Something goes wrong: " + ex);
+        }
+
+        return history;
+    }
+
+    // Function 3
+    public static void showHistory(){
+        System.out.print("History: ");
+        System.out.println(history);
+
+        // for(String item: history){
+        //     System.out.println("-" + item);
+        // }
+    }
+
     public static void seeAllDictionary(){
         // for (String i:hashMap.keySet()){
         //     for (List<String> j:hashMap.values()){
@@ -201,6 +261,7 @@ public class main {
             readFile("slang.txt");
         }
 
+        history = readHistory("history.txt");
         Menu();
     }
 }
