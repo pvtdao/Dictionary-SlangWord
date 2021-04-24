@@ -48,7 +48,7 @@ public class main {
                             showHistory();
                             break;
                         case 4:
-                            System.out.println("Function 4");
+                            addFunction();
                             break;
                         case 5:
                             System.out.println("Function 5");
@@ -69,7 +69,7 @@ public class main {
                             System.out.println("Function 10");
                             break;
                         case 11:
-                            System.exit(0   );
+                            System.exit(0);
                             break;
                         default: 
                             System.out.println("Your option is not available!");
@@ -81,13 +81,13 @@ public class main {
                     sc.nextLine();
                 }
             }
-            
-            // saveHistory("history.txt");
+
+            saveHistory("history.txt");
+            writeFile("newSlang.txt");
             System.out.println("Keep doing? (yes/no)");
             redo = sc.nextLine();
             
         }while(redo.equals("yes") == true);
-
     }
 
     public static void readFile(String fileName){
@@ -237,11 +237,98 @@ public class main {
     // Function 3
     public static void showHistory(){
         System.out.print("History: ");
-        System.out.println(history);
+        System.out.println(history.toString());
 
         // for(String item: history){
         //     System.out.println("-" + item);
         // }
+    }
+
+    public static void addNew(String slangWord, String define){
+        ArrayList<String> definition = new ArrayList<String>();
+        definition.add(define);
+
+        hashMap.put(slangWord.toUpperCase(), definition);
+        System.out.println("Add successfully");
+    }
+
+    public static void addDuplicate(String slangWord, String define){
+        List<String> definition = new ArrayList<String>();
+        definition = hashMap.get(slangWord);
+        definition.add(define);
+
+        hashMap.put(slangWord.toUpperCase(), definition);
+        System.out.println("Add successfully");
+    }
+
+    // Function 4
+    public static void addFunction(){
+        System.out.print("Enter slang word: ");
+        String slang = sc.nextLine();
+        slang = slang.toUpperCase().trim();
+
+        System.out.print("Enter definition: ");
+        String definition = sc.nextLine();
+
+        if(hashMap.containsKey(slang)){
+            System.out.println("This slang word already exists! \nDo you want to overwrite or duplicate it?");
+            System.out.println("1. Overwrite");
+            System.out.println("2. Duplicate");
+            System.out.print("Your choice: ");;
+
+            boolean check = false;
+            int option;
+
+            while(!check){
+                try{
+                    option = sc.nextInt();
+                    sc.nextLine();
+                    check = true;
+
+                    switch(option){
+                        case 1:
+                            addNew(slang, definition);
+                            break;
+                        case 2:
+                            addDuplicate(slang, definition);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                catch(Exception eX){
+                    System.out.println("Your choice must be a number! Choose again: ");
+                    sc.nextLine();
+                }
+            }
+        }
+        else{
+            addNew(slang, definition);
+        }
+    }
+
+    public static void writeFile(String fileName){
+        try{
+            File file = new File(fileName);
+            FileWriter fileWriter = new FileWriter(file);
+
+            //Get slang word
+            for (String slang : hashMap.keySet()) {
+                fileWriter.write(slang + "`");
+                List<String> definition = hashMap.get(slang);
+
+                int i;
+                for (i = 0; i < definition.size() - 1; i++) {
+                    fileWriter.write(definition.get(i) + "| ");
+                }
+
+                fileWriter.write(definition.get(i) + "\n");
+            }
+
+            fileWriter.close();
+        }catch(Exception ex){
+            System.out.println("Something goes wrong: " + ex);
+        }
     }
 
     public static void seeAllDictionary(){
@@ -261,7 +348,9 @@ public class main {
             readFile("slang.txt");
         }
 
+        readFile("newSlang.txt");
         history = readHistory("history.txt");
+
         Menu();
     }
 }
