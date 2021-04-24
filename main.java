@@ -51,7 +51,7 @@ public class main {
                             addFunction();
                             break;
                         case 5:
-                            System.out.println("Function 5");
+                            editSlang();
                             break;
                         case 6:
                             System.out.println("Function 6");
@@ -129,6 +129,30 @@ public class main {
         }
     }
 
+    public static void writeFile(String fileName){
+        try{
+            File file = new File(fileName);
+            FileWriter fileWriter = new FileWriter(file);
+
+            //Get slang word
+            for (String slang : hashMap.keySet()) {
+                fileWriter.write(slang + "`");
+                List<String> definition = hashMap.get(slang);
+
+                int i;
+                for (i = 0; i < definition.size() - 1; i++) {
+                    fileWriter.write(definition.get(i) + "| ");
+                }
+
+                fileWriter.write(definition.get(i) + "\n");
+            }
+
+            fileWriter.close();
+        }catch(Exception ex){
+            System.out.println("Something goes wrong: " + ex);
+        }
+    }
+
     // Function 1
     public static void findDefine(){
         System.out.print("Enter a Slang: ");
@@ -153,7 +177,7 @@ public class main {
         List<String> list = hashMap.get(slangWord);
 
         for(String word: list){
-            System.out.print(word + ", ");
+            System.out.print(word + " ");
         }
 
         System.out.print("\n");
@@ -307,29 +331,30 @@ public class main {
         }
     }
 
-    public static void writeFile(String fileName){
-        try{
-            File file = new File(fileName);
-            FileWriter fileWriter = new FileWriter(file);
+    public static void editSlang(){
+        System.out.print("Enter a slang: ");
+        String slang = sc.nextLine();
+        slang = slang.toUpperCase();
 
-            //Get slang word
-            for (String slang : hashMap.keySet()) {
-                fileWriter.write(slang + "`");
-                List<String> definition = hashMap.get(slang);
+        if(hashMap.containsKey(slang)){
+            System.out.print("Enter new slang: ");
+            String newSlang = sc.nextLine();
+            System.out.print("Enter new definition of this slang: ");
+            String newdDefine = sc.nextLine();
 
-                int i;
-                for (i = 0; i < definition.size() - 1; i++) {
-                    fileWriter.write(definition.get(i) + "| ");
-                }
+            List<String> definition = new ArrayList<String>();
+            definition.add(newdDefine);
+            hashMap.put(newSlang.toUpperCase(), definition);
+            hashMap.remove(slang);
 
-                fileWriter.write(definition.get(i) + "\n");
-            }
-
-            fileWriter.close();
-        }catch(Exception ex){
-            System.out.println("Something goes wrong: " + ex);
+            System.out.println("Edit successfully!");
+        }
+        else{
+            System.out.println("This slang word does not exist!");
         }
     }
+
+    
 
     public static void seeAllDictionary(){
         // for (String i:hashMap.keySet()){
