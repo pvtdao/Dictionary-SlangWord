@@ -54,7 +54,7 @@ public class main {
                             editSlang();
                             break;
                         case 6:
-                            System.out.println("Function 6");
+                            deleteSlang();
                             break;
                         case 7:
                             System.out.println("Function 7");
@@ -331,8 +331,9 @@ public class main {
         }
     }
 
+    //Function 5
     public static void editSlang(){
-        System.out.print("Enter a slang: ");
+        System.out.print("Enter a slang you want to edit: ");
         String slang = sc.nextLine();
         slang = slang.toUpperCase();
 
@@ -348,6 +349,48 @@ public class main {
             hashMap.remove(slang);
 
             System.out.println("Edit successfully!");
+        }
+        else{
+            System.out.println("This slang word does not exist!");
+        }
+    }
+
+    public static void deleteSlang(){
+        System.out.print("Enter a slang you wanna to delete: ");
+        String slang = sc.nextLine();
+        slang = slang.toUpperCase();
+
+        if(hashMap.containsKey(slang)){
+            int option;
+            System.out.println("Confirm delete!");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            boolean check = false;
+
+            while(!check){
+                try{
+                    option = sc.nextInt();
+                    sc.nextLine();
+                    check = true;
+
+                    switch(option){
+                    case 1:
+                        hashMap.remove(slang);
+                        System.out.println("Delete successfully");
+
+                        break;
+                    case 2:
+                        System.out.println("Cancel delete");
+                        break;
+                    }
+                }
+                catch(Exception ex){
+                    System.out.print("Your choice must be a number! Choose again: ");
+                    sc.nextLine();
+                }
+                
+            }         
         }
         else{
             System.out.println("This slang word does not exist!");
