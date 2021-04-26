@@ -57,10 +57,10 @@ public class main {
                             deleteSlang();
                             break;
                         case 7:
-                            System.out.println("Function 7");
+                            resetOriginalSlang();                        
                             break;
                         case 8:
-                            System.out.println("Function 8");
+                            randomWord();                        
                             break;
                         case 9:
                             System.out.println("Function 9");
@@ -77,7 +77,7 @@ public class main {
                     }
                 }
                 catch(Exception ex){
-                    System.out.println("Your choice must be a number! Choose again: ");
+                    System.out.println("Menu said: Your choice must be a number! Choose again: ");
                     sc.nextLine();
                 }
             }
@@ -321,7 +321,7 @@ public class main {
                     }
                 }
                 catch(Exception eX){
-                    System.out.println("Your choice must be a number! Choose again: ");
+                    System.out.println("Add function said: Your choice must be a number! Choose again: ");
                     sc.nextLine();
                 }
             }
@@ -331,7 +331,7 @@ public class main {
         }
     }
 
-    //Function 5
+    // Function 5
     public static void editSlang(){
         System.out.print("Enter a slang you want to edit: ");
         String slang = sc.nextLine();
@@ -355,6 +355,7 @@ public class main {
         }
     }
 
+    // Function 6
     public static void deleteSlang(){
         System.out.print("Enter a slang you wanna to delete: ");
         String slang = sc.nextLine();
@@ -386,10 +387,9 @@ public class main {
                     }
                 }
                 catch(Exception ex){
-                    System.out.print("Your choice must be a number! Choose again: ");
+                    System.out.print("Delete function said: Your choice must be a number! Choose again: ");
                     sc.nextLine();
                 }
-                
             }         
         }
         else{
@@ -397,18 +397,33 @@ public class main {
         }
     }
 
-    
+    // Function 7
+    public static void resetOriginalSlang(){
+        //Make hashMap be empty
+        hashMap.clear();
 
-    public static void seeAllDictionary(){
-        // for (String i:hashMap.keySet()){
-        //     for (List<String> j:hashMap.values()){
-        //         System.out.println(i + " " + j);
-        //     }
-        // }
+        readFile("slang.txt");
+        System.out.println("Reset successfully!");
+    }
 
-        for(String i: hashMap.keySet()){
-            System.out.println(i + " " +hashMap.get(i));
-        }
+    // Function 8
+    public static void randomWord(){
+        int min = 0;
+        int max = hashMap.size();
+        int randomNumber = (int)Math.floor(Math.random()*(max - min + 1) + min);
+
+
+        //Finding the keySet from hashmap
+        Set<String> keySets = hashMap.keySet();
+
+        // convert by array
+        ArrayList<String> keyArray = new ArrayList<String>(keySets);
+
+        // Get key of index
+        String randomKey = keyArray.get(randomNumber);
+
+        System.out.println("Random word of the day: ");
+        System.out.println(randomKey + ": " + hashMap.get(randomKey));
     }
 
     public static void main(String[] args){
