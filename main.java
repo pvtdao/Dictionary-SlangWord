@@ -63,10 +63,10 @@ public class main {
                             randomWord();                        
                             break;
                         case 9:
-                            System.out.println("Function 9");
+                            game1();
                             break;
                         case 10:
-                            System.out.println("Function 10");
+                            game2();
                             break;
                         case 11:
                             System.exit(0);
@@ -77,14 +77,14 @@ public class main {
                     }
                 }
                 catch(Exception ex){
-                    System.out.println("Menu said: Your choice must be a number! Choose again: ");
+                    System.out.print("Menu said: Your choice must be a number! Choose again: ");
                     sc.nextLine();
                 }
             }
 
             saveHistory("history.txt");
             writeFile("newSlang.txt");
-            System.out.println("Keep doing? (yes/no)");
+            System.out.print("Keep doing? (yes/no): ");
             redo = sc.nextLine();
             
         }while(redo.equals("yes") == true);
@@ -373,16 +373,19 @@ public class main {
                 try{
                     option = sc.nextInt();
                     sc.nextLine();
-                    check = true;
 
                     switch(option){
                     case 1:
                         hashMap.remove(slang);
                         System.out.println("Delete successfully");
-
+                        check = true;
                         break;
                     case 2:
                         System.out.println("Cancel delete");
+                        check = true;
+                        break;
+                    default:
+                        System.out.print("Your choice is not available! Try again: ");
                         break;
                     }
                 }
@@ -406,24 +409,146 @@ public class main {
         System.out.println("Reset successfully!");
     }
 
-    // Function 8
-    public static void randomWord(){
-        int min = 0;
-        int max = hashMap.size();
-        int randomNumber = (int)Math.floor(Math.random()*(max - min + 1) + min);
+    public static int randomNumber(int min, int max){
+        return (int)Math.floor(Math.random()*(max - min + 1) + min);
+    }
 
-
+    public static String randomKey(){
         //Finding the keySet from hashmap
         Set<String> keySets = hashMap.keySet();
 
         // convert by array
         ArrayList<String> keyArray = new ArrayList<String>(keySets);
 
+        int randomNumber = randomNumber(0, hashMap.size());
+
         // Get key of index
-        String randomKey = keyArray.get(randomNumber);
+        return keyArray.get(randomNumber);
+    }
+
+    // Function 8
+    public static void randomWord(){
+        String randomKey = randomKey();
 
         System.out.println("Random word of the day: ");
         System.out.println(randomKey + ": " + hashMap.get(randomKey));
+    }
+
+    // Function 9
+    public static void game1(){
+        List<String> listRdKeys = new ArrayList<String>();
+
+        //Random list key to show answer
+        for(int i = 0; i < 4; i++){
+            String word = randomKey();
+            listRdKeys.add(word);
+        }
+
+        // List random keys starts with 0
+        // So random index from 0 to listrandomkey.size() - 1
+        // RandomIndex to choose 1 index of key 
+        int randomIndex = randomNumber(0, listRdKeys.size() - 1);
+
+        // Get key of random index
+        // This also a correct answer for the question
+        String answer = listRdKeys.get(randomIndex);
+
+        System.out.println("What does " + answer + " stand for?");
+
+
+        // Show list answer for this key
+        for(int i = 0; i < listRdKeys.size(); i++){
+            System.out.println(i+1 + ") " + hashMap.get(listRdKeys.get(i)));
+        }
+
+        boolean check = false;
+
+        while(!check){
+            try{
+                int yourAnswer = 0;
+
+                System.out.print("Your answer is: ");
+                yourAnswer = sc.nextInt();
+                sc.nextLine();
+
+                if(yourAnswer < 1 || yourAnswer > 4){
+                    System.out.println("Game 1 said: Your choice is not available! Choose again: ");
+                }
+                else{
+                    String keyYourAnswer = listRdKeys.get(yourAnswer-1);
+                    check = true;
+
+                    if(keyYourAnswer.equals(answer)){
+                        System.out.println("Correct answer <3");
+                    }
+                    else{
+                        System.out.println("Good luck next time :<");
+                    }
+                }
+            }
+            catch(Exception ex){
+                System.out.println("Game 1 said: Your choice must be a number! Choose again: ");
+                sc.nextLine();
+            }
+        }
+    }
+
+    public static void game2(){
+        List<String> listRdKeys = new ArrayList<String>();
+
+        //Random list key
+        for(int i = 0; i < 4; i++){
+            String key = randomKey();
+            listRdKeys.add(key);
+        }
+
+        // Find random index
+        int randomIndex = randomNumber(0, listRdKeys.size() - 1);
+
+        // Get key of this random index
+        String keyQuestion = listRdKeys.get(randomIndex);
+
+        // Get value of this key
+        getDefinition(keyQuestion);
+        System.out.println("Find slang word for this sentence: ");
+
+        int i = 1;
+        // Show 4 options
+        for(String slang: listRdKeys){
+            System.out.println(i +") " + slang);
+            i++;
+        }
+
+        boolean check = false;
+
+        while(!check){
+            try{
+                int yourAnswer = 0;
+
+                System.out.print("Your answer is: ");
+                yourAnswer = sc.nextInt();
+                sc.nextLine();
+
+                if(yourAnswer < 1 || yourAnswer > 4){
+                    System.out.println("Your choice is not available! Choose again: ");
+                }
+                else{
+                    String keyYourAnswer = listRdKeys.get(yourAnswer-1);
+                    check = true;
+
+                    if(keyYourAnswer.equals(keyQuestion)){
+                        System.out.println("Correct answer <3");
+                    }
+                    else{
+                        System.out.println("Good luck next time :<");
+                    }
+                }
+            }
+            catch(Exception ex){
+                System.out.println("Your choice must be a number! Choose again: ");
+                sc.nextLine();
+            }
+        }
     }
 
     public static void main(String[] args){
