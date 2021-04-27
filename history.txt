@@ -12,3 +12,21 @@ pvtd
 ha
 happy
 no
+num
+n
+yes
+y
+1
+2
+ab
+ad
+ab
+num
+num
+number
+phan vu thanh dao
+num
+nu
+n
+num
+num
